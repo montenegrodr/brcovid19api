@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info: 
+  title: Provide updated report about covid19 cases in Brazil
+  version: 1.0.0
+paths: 
+  /covid19: 
+    get: 
+      operationId: getCovid19ReportData
+      responses: 
+        '200':
+          description: Up to date data about covid19 in Brazil
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/report'
+components:
+  schemas: 
+    report: 
+      type: object
+      properties: 
+        confirmed: 
+          type: integer
+        deceased: 
+          type: integer
+        recovered: 
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
