@@ -1,4 +1,5 @@
 GOPATH := $(shell pwd)
+PORT   := 8080
 
 .PHONY: build-server-src
 build-server-src:
@@ -12,3 +13,7 @@ dep:
 .PHONY: build
 build:
 	go build $(GOPATH)/src/github.com/montenegrodr/brcovid19api/cmd/brcovid19api-server
+
+.PHONY: start
+start:
+	$(GOPATH)/brcovid19api-server --port $(PORT)

@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/montenegrodr/brcovid19api/restapi/operations"
+	"github.com/montenegrodr/brcovid19api/models"
 )
 
 //go:generate swagger generate server --target ../../brcovid19api --name Brcovid19api --spec ../../../../../swagger.yaml
@@ -33,11 +34,14 @@ func configureAPI(api *operations.Brcovid19apiAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.GetCovid19ReportDataHandler == nil {
-		api.GetCovid19ReportDataHandler = operations.GetCovid19ReportDataHandlerFunc(func(params operations.GetCovid19ReportDataParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetCovid19ReportData has not yet been implemented")
-		})
-	}
+	api.GetCovid19ReportDataHandler = operations.GetCovid19ReportDataHandlerFunc(func(params operations.GetCovid19ReportDataParams) middleware.Responder {
+		return operations.NewGetCovid19ReportDataOK().WithPayload(
+			&models.Response{
+				Confirmed: 100,
+				Deceased: 100,
+				Recovered: 100,
+			})
+	})
 
 	api.PreServerShutdown = func() {}
 
