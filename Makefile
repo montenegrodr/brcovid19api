@@ -2,7 +2,7 @@ GOPATH          := $(shell pwd)/src/go
 PORT            := 8080
 REDIS_HOST      ?= localhost
 REDIS_PORT      ?= 6379
-SERVICE_VERSION := 1.0
+SERVICE_VERSION := 1.1
 FETCHER_VERSION := 1.0
 
 .PHONY: build-server-src
@@ -29,7 +29,7 @@ build:
 
 .PHONY: start
 start:
-	REDIS_HOST=$(REDIS_HOST) REDIS_PORT=$(REDIS_PORT) ./brcovid19api-server --port $(PORT)
+	REDIS_HOST=$(REDIS_HOST) REDIS_PORT=$(REDIS_PORT) ./brcovid19api-server --port $(PORT) --host=0.0.0.0
 
 .PHONY: build-docker-service
 build-docker-service:

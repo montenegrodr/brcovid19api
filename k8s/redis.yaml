@@ -31,8 +31,6 @@ metadata:
   name: redis
   labels:
     app: redis
-    role: master
-    tier: backend
 spec:
   ports:
   - port: 6379
