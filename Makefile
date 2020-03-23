@@ -1,4 +1,4 @@
-GOPATH := $(shell pwd)
+GOPATH := $(shell pwd)/src/go
 PORT   := 8080
 
 .PHONY: build-server-src
