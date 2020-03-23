@@ -1,0 +1,9 @@
+FROM python:3.6.4-stretch
+
+RUN mkdir /app
+ADD . /app/
+WORKDIR /app
+
+RUN pip install -r src/python/requirements.txt
+
+ENTRYPOINT ["make", "run-fetcher"]

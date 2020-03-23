@@ -1,7 +1,9 @@
-GOPATH     := $(shell pwd)/src/go
-PORT       := 8080
-REDIS_HOST ?= localhost
-REDIS_PORT ?= 6379
+GOPATH          := $(shell pwd)/src/go
+PORT            := 8080
+REDIS_HOST      ?= localhost
+REDIS_PORT      ?= 6379
+SERVICE_VERSION := 1.0
+FETCHER_VERSION := 1.0
 
 .PHONY: build-server-src
 build-server-src: $(GOPATH)/bin $(GOPATH)/pkg
@@ -28,3 +30,15 @@ build:
 .PHONY: start
 start:
 	REDIS_HOST=$(REDIS_HOST) REDIS_PORT=$(REDIS_PORT) ./brcovid19api-server --port $(PORT)
+
+.PHONY: build-docker-service
+build-docker-service:
+	docker build -t montenegrodr/brcovid19api-service:$(SERVICE_VERSION) -f Dockerfile-service .
+
+.PHONY: run-fetcher
+run-fetcher:
+	REDIS_HOST=$(REDIS_HOST) REDIS_PORT=$(REDIS_PORT) python src/python/fetch-data.py
+
+.PHONY: build-docker-fetcher
+build-docker-fetcher:
+	docker build -t montenegrodr/brcovid19api-fetcher:$(FETCHER_VERSION) -f Dockerfile-fetcher .

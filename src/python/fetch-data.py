@@ -52,6 +52,7 @@ def extract(anchor, text):
 
 def main():
     r = redis.Redis(host=REDIS_HOSTS, port=REDIS_PORT)
+    print('Redis Address: {}:{}'.format(REDIS_HOSTS, REDIS_PORT))
     resp = requests.get(SOURCE)
 
     if resp.status_code == 200:
