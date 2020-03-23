@@ -3,6 +3,8 @@ PORT   := 8080
 
 .PHONY: build-server-src
 build-server-src:
+	mkdir -p $(GOPATH)/bin
+	mkdir -p $(GOPATH)/pkg
 	mkdir -p $(GOPATH)/src/github.com/montenegrodr/brcovid19api/
 	GOPATH=$(GOPATH) swagger generate server -f ./swagger.yaml -A brcovid19api -t $(GOPATH)/src/github.com/montenegrodr/brcovid19api/
 
