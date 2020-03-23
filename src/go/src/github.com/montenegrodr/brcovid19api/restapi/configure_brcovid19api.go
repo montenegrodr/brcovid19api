@@ -51,6 +51,8 @@ func configureAPI(api *operations.Brcovid19apiAPI) http.Handler {
     redisPort := getEnv("REDIS_PORT", "6379")
     redisAddr := fmt.Sprintf("%s:%s",redisHost, redisPort)
 
+    fmt.Println("Redis address: ", redisAddr)
+
 	client := redis.NewClient(&redis.Options{
 			Addr:     redisAddr,
 			Password: "", // no password set

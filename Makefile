@@ -1,15 +1,21 @@
-GOPATH := $(shell pwd)/src/go
-PORT   := 8080
+GOPATH     := $(shell pwd)/src/go
+PORT       := 8080
+REDIS_HOST ?= localhost
+REDIS_PORT ?= 6379
 
 .PHONY: build-server-src
-build-server-src:
-	mkdir -p $(GOPATH)/bin
-	mkdir -p $(GOPATH)/pkg
+build-server-src: $(GOPATH)/bin $(GOPATH)/pkg
 	mkdir -p $(GOPATH)/src/github.com/montenegrodr/brcovid19api/
 	GOPATH=$(GOPATH) swagger generate server -f ./swagger.yaml -A brcovid19api -t $(GOPATH)/src/github.com/montenegrodr/brcovid19api/
 
+$(GOPATH)/bin:
+	mkdir -p $(GOPATH)/bin
+
+$(GOPATH)/pkg:
+	mkdir -p $(GOPATH)/pkg
+
 .PHONY: dep
-dep:
+dep: $(GOPATH)/bin $(GOPATH)/pkg
 	go get -u github.com/golang/dep/cmd/dep
 
 .PHONY: build
@@ -18,4 +24,4 @@ build:
 
 .PHONY: start
 start:
-	$(GOPATH)/brcovid19api-server --port $(PORT)
+	REDIS_HOST=$(REDIS_HOST) REDIS_PORT=$(REDIS_PORT) ./brcovid19api-server --port $(PORT)
