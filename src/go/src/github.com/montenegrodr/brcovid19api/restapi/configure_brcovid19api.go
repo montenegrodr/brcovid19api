@@ -3,6 +3,8 @@
 package restapi
 
 import (
+    "os"
+    "fmt"
 	"strings"
 	"crypto/tls"
 	"net/http"
@@ -24,6 +26,13 @@ func configureFlags(api *operations.Brcovid19apiAPI) {
 }
 
 
+func getEnv(key, fallback string) string {
+    if value, ok := os.LookupEnv(key); ok {
+        return value
+    }
+    return fallback
+}
+
 func configureAPI(api *operations.Brcovid19apiAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
@@ -38,8 +47,12 @@ func configureAPI(api *operations.Brcovid19apiAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+    redisHost := getEnv("REDIS_HOST", "localhost")
+    redisPort := getEnv("REDIS_PORT", "6379")
+    redisAddr := fmt.Sprintf("%s:%s",redisHost, redisPort)
+
 	client := redis.NewClient(&redis.Options{
-			Addr:     "localhost:6379",
+			Addr:     redisAddr,
 			Password: "", // no password set
 			DB:       0,  // use default DB
 	})
