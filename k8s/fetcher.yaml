@@ -1,0 +1,31 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+    name: data-fetcher
+spec:
+    schedule: "*/5 * * * *"
+    successfulJobsHistoryLimit: 3
+    failedJobsHistoryLimit: 5
+    jobTemplate:
+        spec:
+            backoffLimit: 2
+            template:
+                spec:
+                    containers:
+                        - name: news-clustering
+                          image: montenegrodr/brcovid19api-fetcher:1.0
+                          imagePullPolicy: IfNotPresent
+                          command: ["make", "run-fetcher"]
+                          env:
+                              - name: "REDIS_HOST"
+                                value: "redis.application.svc.cluster.local"
+                              - name: "REDIS_PORT"
+                                value: "6379"
+                          resources:
+                              requests:
+                                  cpu: 0.2
+                                  memory: 100Mi
+                              limits:
+                                  cpu: 0.2
+                                  memory: 100Mi
+                    restartPolicy: Never
