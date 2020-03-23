@@ -14,9 +14,12 @@ $(GOPATH)/bin:
 $(GOPATH)/pkg:
 	mkdir -p $(GOPATH)/pkg
 
-.PHONY: dep
-dep: $(GOPATH)/bin $(GOPATH)/pkg
-	go get -u github.com/golang/dep/cmd/dep
+.PHONY: dep-all
+dep-all: $(GOPATH)/bin $(GOPATH)/pkg
+	cd $($GOPATH) && \
+	go get -u github.com/golang/dep/cmd/dep && \
+	cd $(GOPATH)/src/github.com/montenegrodr/brcovid19api && \
+	$(GOPATH)/bin/dep ensure
 
 .PHONY: build
 build:
